@@ -56,4 +56,4 @@ Attribute|Register
 `MOS6502.N`|**P & 80h** (negative flag)
 
 
-[res]: #mos6502res
+[res]: #mos6502res-a--none-x--none-y--none-c--none-z--none-b--none-v--none-n--none-m--none
