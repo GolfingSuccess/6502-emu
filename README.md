@@ -70,3 +70,5 @@ If the given ROM doesn't fit, the device cannot be initialized.
 The reader is `Device.read` and the writer is `Device.write`.
 ## `Device(ROM, *, input: io.BufferedReader = sys.stdin.buffer, output: io.BufferedWriter = sys.stdout.buffer)`
 Initializes the computer with the code in `ROM` (an iterable containing bytes as `int`s), the input stream `input` and the output stream `output`.
+
+**Warning: `sys.stdin.buffer` and `sys.stdout.buffer` are not guaranteed to work in all conforming implementations of Python 3!**
