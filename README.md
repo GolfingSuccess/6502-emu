@@ -59,4 +59,14 @@ Attribute|Register
 
 [res]: #mos6502res-a--none-x--none-y--none-c--none-z--none-b--none-v--none-n--none-m--none
 # `basic6502device.py`
-This is an example implementation of a simple computer with STDIN and STDOUT streams. Reading from **00ffh** reads a byte off of the input stream, and writing to **00ffh** writes a byte to the output stream.
+This is an example implementation of a simple computer with STDIN and STDOUT streams. Reading from **00ffh** reads a byte off of the input stream, and writing to **00ffh** writes a byte to the output stream. The following address ranges are not writable:
+Address range|Content
+:-:|:-:
+**[0200h, 8000h]**|The given ROM, padded after the end with **00h**
+**[fffah, ffffh]**|`00 70 00 02 00 60`
+
+If the given ROM doesn't fit, the device cannot be initialized.
+
+The reader is `Device.read` and the writer is `Device.write`.
+## `Device(ROM, *, input: io.BufferedReader = sys.stdin.buffer, output: io.BufferedWriter = sys.stdout.buffer)`
+Initializes the computer with the code in `ROM` (an iterable containing bytes as `int`s), the input stream `input` and the output stream `output`.
