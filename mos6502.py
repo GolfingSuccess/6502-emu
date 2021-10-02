@@ -1,6 +1,5 @@
 # Warning: illegal opcodes not supported!
 
-
 class MOS6502:
     PNames = ('C', 'Z', 'I', 'D', 'B', 'm', 'V', 'N')
 
