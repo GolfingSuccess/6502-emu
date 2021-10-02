@@ -65,6 +65,8 @@ Address range|Content
 **[0200h, 8000h]**|The given ROM, padded after the end with **00h**
 **[fffah, ffffh]**|`00 70 00 02 00 60`
 
+Attempting to write to the above addresses will fail silently.
+
 If the given ROM doesn't fit, the device cannot be initialized.
 
 The reader is `Device.read` and the writer is `Device.write`.
