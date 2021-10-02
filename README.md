@@ -2,6 +2,8 @@
 This is a Python module that provides an emulated MOS6502 CPU.
 
 **Warning: this does not execute illegal instructions!**
+
+**Warning: accessing undocumented features is unsupported!**
 # `mos6502.py`
 This file provides the base module, which contains the `MOS6502` class.
 ## `MOS6502(memRead, memWrite, *, A = 0, X = 0, Y = 0, C = 0, Z = 1, B = 1, V = 0, N = 0, m = 1)`
