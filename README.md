@@ -57,5 +57,6 @@ Attribute|Register
 `MOS6502.V`|**P & 40h** (overflow flag)
 `MOS6502.N`|**P & 80h** (negative flag)
 
-
 [res]: #mos6502res-a--none-x--none-y--none-c--none-z--none-b--none-v--none-n--none-m--none
+# `basic6502device.py`
+This is an example implementation of a simple computer with STDIN and STDOUT streams. Reading from **00ffh** reads a byte off of the input stream, and writing to **00ffh** writes a byte to the output stream.
