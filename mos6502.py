@@ -48,7 +48,10 @@ class MOS6502:
     def readByte(self, address):
         if address == 'A':
             return self.A
-        return self.MR(address & 0xffff) & 0xff
+        if isinstance(address, int):
+            return self.MR(address & 0xffff) & 0xff
+        if address[0] == 'I':
+            return address[1] & 0xff
 
     def writeByte(self, address, byte):
         if address == 'A':
@@ -278,9 +281,9 @@ class MOS6502:
         return 'A'
 
     @addrMode(1)
-    def IMM(self, _):
+    def IMM(self, address):
         'Immediate Addressing'
-        return self.PC - 1
+        return ['I', address]
 
     @addrMode(-1)
     def ISA(self):
