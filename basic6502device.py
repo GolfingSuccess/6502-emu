@@ -2,14 +2,14 @@ class Device:
     import io
     import sys
 
-    def __init__(self, ro, *, input: io.BufferedReader = sys.stdin.buffer, output: io.BufferedWriter = sys.stdout.buffer):
+    def __init__(self, ROM, *, input: io.BufferedReader = sys.stdin.buffer, output: io.BufferedWriter = sys.stdout.buffer):
         if not isinstance(input, self.io.BufferedReader):
             raise TypeError('A readable binary input stream is required')
         if not isinstance(output, self.io.BufferedWriter):
             raise TypeError('A writable binary output stream is required')
-        ro = list(ro)[: 0x8000 - 0x0200]
+        ROM = list(ROM)[: 0x8000 - 0x0200]
         self.mem = (1 << 16) * [0x00]
-        self.mem[0x0200: 0x0200 + len(ro)] = ro
+        self.mem[0x0200: 0x0200 + len(ROM)] = ROM
         self.mem[0xfffa:] = [0x00, 0x70,
                              0x00, 0x02,
                              0x00, 0x60]

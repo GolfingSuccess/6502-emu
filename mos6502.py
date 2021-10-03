@@ -28,9 +28,9 @@ class MOS6502:
         else:
             self.__dict__[name] = value & (1 << mask) - 1
 
-    def __init__(self, MR, MW, *, A=0, X=0, Y=0, C=0, Z=1, B=1, V=0, N=0, m=1):
-        self.MR = MR
-        self.MW = MW
+    def __init__(self, memRead, memWrite, *, A=0, X=0, Y=0, C=0, Z=1, B=1, V=0, N=0, m=1):
+        self.MR = memRead
+        self.MW = memWrite
         self.P = 0
         self.RES(A=A, X=X, Y=Y, C=C, Z=Z, B=B, V=V, N=N, m=m)
 
