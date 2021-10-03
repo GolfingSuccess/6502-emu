@@ -115,21 +115,22 @@ class MOS6502:
 
     def de2C(self, byte):
         return (byte & 0x7f) - ((byte & 0x80) << 1)
+    
+    def condBitNeg(self, byte, op):
+        return {'+': byte, '-': ~byte}[op]
 
     def arithOp(self, byte, op):
-        b2C = self.de2C(byte)
-        sum = self.de2C(self.A) + {'+': b2C, '-': ~b2C}[op] + self.C
-        uSum = self.A + {'+': byte, '-': ~byte}[op] + self.C
+        sum = self.de2C(self.A) + self.condBitNeg(self.de2C(byte), op) + self.C
+        uSum = self.A + self.condBitNeg(byte, op) + self.C
         if not self.D or op == '-':
             self.setVFlag(sum)
             self.setFlags(uSum, 'CN')
         self.setFlags(uSum, 'Z')
         if self.D:
             AH = self.A & 0xf0
-            bL = byte & 0x0f
             bH = byte & 0xf0
             sign = {'+': 1, '-': -1}[op]
-            dSL = (self.A & 0x0f) + {'+': bL, '-': ~bL}[op] + self.C
+            dSL = (self.A & 0x0f) + self.condBitNeg(byte & 0x0f, op) + self.C
             if op == '+' and dSL >= 0x0a or op == '-' and dSL < 0:
                 dSL = ((dSL + sign * 0x06) & 0x0f) + sign * 0x10
             dS = AH + sign * bH + dSL
