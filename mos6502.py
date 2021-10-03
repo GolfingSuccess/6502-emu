@@ -1,6 +1,10 @@
 # Warning: illegal opcodes not supported!
 
 class MOS6502:
+    '''Use __init__ to initialize a CPU.
+Use NMI, RES and IRQ to send interrupt requests.
+Use step to execute an instruction.
+Access to other attributes is unsupported.'''
     PNames = ('C', 'Z', 'I', 'D', 'B', 'm', 'V', 'N')
 
     # Class properties
@@ -29,6 +33,7 @@ class MOS6502:
             self.__dict__[name] = value & (1 << mask) - 1
 
     def __init__(self, memRead, memWrite, *, A=0, X=0, Y=0, C=0, Z=1, B=1, V=0, N=0, m=1):
+        '''Initializes a CPU connected to memory reader memRead and memory writer memWrite, and passes the keyword arguments verbatim to RES.'''
         self.MR = memRead
         self.MW = memWrite
         self.P = 0
@@ -36,6 +41,7 @@ class MOS6502:
 
     # Main rote
     def step(self):
+        '''Execute and return an instruction.'''
         byte = self.readByte(self.PC)
         try:
             op = self.ops[byte]
@@ -79,9 +85,13 @@ class MOS6502:
         self.readPC(address)
 
     def NMI(self):
+        '''Sends a non-maskable interrupt request.'''
         self.interrupt(0xfffa)
 
     def RES(self, *, A=None, X=None, Y=None, C=None, Z=None, B=None, V=None, N=None, m=None):
+        '''Sends a reset signal. The keyword arguments control the initial states of various registers (m is the unused status flag).
+
+If a keyword argument is omitted, its last used value will be used.'''
         self.A = self.RES_A = A if A != None else self.RES_A
         self.X = self.RES_X = X if X != None else self.RES_X
         self.Y = self.RES_Y = Y if Y != None else self.RES_Y
@@ -97,6 +107,7 @@ class MOS6502:
         self.readPC(0xfffc)
 
     def IRQ(self):
+        '''Sends a maskable interrupt request.'''
         if not self.I:
             self.interrupt(0xfffe)
 
