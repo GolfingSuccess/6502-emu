@@ -41,7 +41,7 @@ Access to other attributes is unsupported.'''
 
     # Main rote
     def step(self):
-        '''Execute and return an instruction.'''
+        '''Executes and returns an instruction.'''
         byte = self.readByte(self.PC)
         try:
             op = self.ops[byte]
