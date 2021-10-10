@@ -6,7 +6,7 @@ This is a Python module that provides an emulated MOS6502 CPU.
 **Warning: accessing undocumented features is unsupported!**
 # `mos6502.py`
 This file provides the base module, which contains the `MOS6502` class.
-## `MOS6502(memRead, memWrite, *, A = 0, X = 0, Y = 0, C = 0, Z = 1, B = 1, V = 0, N = 0, m = 1)`
+## `MOS6502(memRead, memWrite, *, A = 0, X = 0, Y = 0, S = 0xff, C = 0, Z = 1, B = 1, V = 0, N = 0, m = 1)`
 Initializes a CPU attached to a device described by `memRead` and `memWrite`.
 
 + `memRead(adr)` will be called whenever the CPU reads the byte at address `adr` and must return an integer, the lowest 8 bits of which shall be the read byte
@@ -19,7 +19,7 @@ Note that there are no additional requirements to these functions, which means t
 The other arguments are passed to [`MOS6502.RES`][res] after storing the device info.
 ## `MOS6502.NMI()`
 Sends a non-maskable interrupt request.
-## `MOS6502.RES(*, A = None, X = None, Y = None, C = None, Z = None, B = None, V = None, N = None, m = None)`
+## `MOS6502.RES(*, A = None, X = None, Y = None, S = None, C = None, Z = None, B = None, V = None, N = None, m = None)`
 Sends a reset signal. The optional arguments provide initial values to some registers, as follows:
 Argument|Bit length|Register
 :-:|:-:|:-:
@@ -57,7 +57,7 @@ Attribute|Register
 `MOS6502.V`|**P & 40h** (overflow flag)
 `MOS6502.N`|**P & 80h** (negative flag)
 
-[res]: #mos6502res-a--none-x--none-y--none-c--none-z--none-b--none-v--none-n--none-m--none
+[res]: #mos6502res-a--none-x--none-y--none-s--none-c--none-z--none-b--none-v--none-n--none-m--none
 # `basic6502device.py`
 This is an example implementation of a simple computer with STDIN and STDOUT streams. Reading from **00ffh** reads a byte off of the input stream, and writing to **00ffh** writes a byte to the output stream. The following address ranges are not writable:
 Address range|Content

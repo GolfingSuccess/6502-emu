@@ -31,12 +31,12 @@ Access to other attributes is unsupported.'''
         else:
             self.__dict__[name] = value
 
-    def __init__(self, memRead, memWrite, *, A=0, X=0, Y=0, C=0, Z=1, B=1, V=0, N=0, m=1):
+    def __init__(self, memRead, memWrite, *, A=0, X=0, Y=0, S=0xff, C=0, Z=1, B=1, V=0, N=0, m=1):
         '''Initializes a CPU connected to memory reader memRead and memory writer memWrite, and passes the keyword arguments verbatim to RES.'''
         self.MR = memRead
         self.MW = memWrite
         self.P = self.RES_P = 0b00000100
-        self.RES(A=A, X=X, Y=Y, C=C, Z=Z, B=B, V=V, N=N, m=m)
+        self.RES(A=A, X=X, Y=Y, S=S, C=C, Z=Z, B=B, V=V, N=N, m=m)
 
     # Misc methods
     def getFlag(self, flag, prefix):
@@ -114,13 +114,14 @@ Access to other attributes is unsupported.'''
         '''Sends a non-maskable interrupt request.'''
         self.interrupt(0xfffa)
 
-    def RES(self, *, A=None, X=None, Y=None, C=None, Z=None, B=None, V=None, N=None, m=None):
+    def RES(self, *, A=None, X=None, Y=None, S=None, C=None, Z=None, B=None, V=None, N=None, m=None):
         '''Sends a reset signal. The keyword arguments control the initial states of various registers (m is the unused status flag).
 
 If a keyword argument is omitted, its last used value will be used.'''
         self.A = self.RES_A = A if A != None else self.RES_A
         self.X = self.RES_X = X if X != None else self.RES_X
         self.Y = self.RES_Y = Y if Y != None else self.RES_Y
+        self.S = self.RES_S = S if S != None else self.RES_S
         for i in ('C', 'Z', 'B', 'V', 'N', 'm'):
             flag = eval(i)
             if flag != None:
@@ -128,7 +129,6 @@ If a keyword argument is omitted, its last used value will be used.'''
                 self.setFlag(i, 'RES_', flag)
             else:
                 self.setFlag(i, '', self.getFlag(i, 'RES_'))
-        self.S = 0xff
         self.D = 0
         self.I = 1
         self.readPC(0xfffc)
