@@ -26,6 +26,7 @@ Argument|Bit length|Register
 `A`|8|**A**
 `X`|8|**X**
 `Y`|8|**Y**
+`S`|8|**S**
 `C`|1|**P & 01h** (carry flag)
 `Z`|1|**P & 02h** (zero flag)
 `B`|1|**P & 10h** (break flag)
