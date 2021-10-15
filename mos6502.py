@@ -201,10 +201,10 @@ If a keyword argument is omitted, its last used value will be used.'''
             original = self.readByte(address)
             if op in ('<<', '<-'):
                 shifted = original << 1 | (op == '<-' and self.C)
-                setFlags(shifted, 'C')
             if op in ('>>', '->'):
                 shifted = original >> 1 | (op == '->' and self.C << 7)
                 self.C = original
+            setFlags(shifted, 'CZN')
             self.writeByte(address, shifted)
 
         def pullPC():
