@@ -205,7 +205,7 @@ If a keyword argument is omitted, its last used value will be used.'''
             if op in ('>>', '->'):
                 shifted = original >> 1 | (op == '->' and self.C << 7)
                 self.C = original
-            self.writeByte(shifted, address)
+            self.writeByte(address, shifted)
 
         def pullPC():
             self.PC = self.pull() | self.pull() << 8
