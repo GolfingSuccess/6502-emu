@@ -15,11 +15,22 @@ class Device:
                              0x00, 0x60]
         self.input = input
         self.output = output
+        self.escaped = None
 
     def read(self, address):
         if address == 0x00ff:
+            if self.escaped != None:
+                escaped = self.escaped
+                self.escaped = None
+                return escaped
             byte = self.input.read(1)
-            self.mem[address] = byte[0] if byte else 0xff
+            if byte:
+                byte = byte[0]
+                if byte in (0xfe, 0xff):
+                    self.escaped = byte
+                    return 0xfe
+                return byte
+            return 0xff
         return self.mem[address]
 
     def write(self, address, data):

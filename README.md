@@ -60,7 +60,13 @@ Attribute|Register
 
 [res]: #mos6502res-a--none-x--none-y--none-s--none-c--none-z--none-b--none-v--none-n--none-m--none
 # `basic6502device.py`
-This is an example implementation of a simple computer with STDIN and STDOUT streams. Reading from **00ffh** reads a byte off of the input stream, and writing to **00ffh** writes a byte to the output stream. The following address ranges are not writable:
+This is an example implementation of a simple computer with STDIN and STDOUT streams.
+
+Reading from **00ffh** reads a byte off of the input stream. If EOF has been reached, **ffh** is read. If the next byte in the stream is **feh** or **ffh**, **feh** is read and you have to read from **00ffh** again to receive the byte. This is an escaping mechanism to differentiate between EOF and the literal byte **ffh**.
+
+Writing to **00ffh** writes a byte to the output stream.
+
+The following address ranges are not writable:
 Address range|Content
 :-:|:-:
 **[0200h, 8000h]**|The given ROM, padded after the end with **00h**
@@ -74,4 +80,4 @@ The reader is `Device.read` and the writer is `Device.write`.
 ## `Device(ROM, *, input: io.BufferedReader = sys.stdin.buffer, output: io.BufferedWriter = sys.stdout.buffer)`
 Initializes the computer with the code in `ROM` (an iterable containing bytes as `int`s), the input stream `input` and the output stream `output`.
 
-**Warning: `sys.stdin.buffer` and `sys.stdout.buffer` are not guaranteed to work in all conforming implementations of Python 3!**
+**Warning: `sys.stdin.buffer` and `sys.stdout.buffer` are not guaranteed to exist in all conforming implementations of Python 3!**
